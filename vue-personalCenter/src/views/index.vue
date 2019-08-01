@@ -28,30 +28,33 @@
            <br/>
            积分
          </div>
-         <!-- <div>
-           <span>0</span>
+         <div>
+           <span>{{card.level}}</span>
            <br/>
-           优惠卷
-         </div> -->
+           等级
+         </div>
         </div>
       </card>
     </div>
     <div class="center_bottom">
       <grid>
-        <!-- <grid-item label="充值">
+        <grid-item label="会员支付" link="/table05">
           <i slot="icon" class="fa fa-rmb fa-lg"></i>
         </grid-item>
-        <grid-item label="修改密码">
+        <grid-item label="修改密码" link="/table04">
           <i slot="icon" class="fa fa-key fa-lg"></i>
-        </grid-item> -->
-        <grid-item label="消费记录" link="/table02" >
+        </grid-item>
+        <!-- <grid-item label="消费记录" link="/table02" >
           <i slot="icon" class="fa fa-file-text fa-lg"></i>
-        </grid-item>
-        <grid-item label="积分记录" link="/table03" >
+        </grid-item> -->
+        <!-- <grid-item label="积分记录" link="/table03" >
           <i slot="icon" class="fa fa-database fa-lg"></i>
-        </grid-item>
+        </grid-item> -->
         <grid-item label="充值记录" link="/table01" >
           <i slot="icon" class="fa fa-navicon fa-lg"></i>
+        </grid-item>
+        <grid-item label="老会员绑定" link="/table06">
+          <i slot="icon" class="fa fa-user-plus fa-lg"></i>
         </grid-item>
       </grid>
     </div>
@@ -101,10 +104,10 @@ export default {
     var mid=GetQueryString("mid");
     var card_id=GetQueryString("card_id");
     var openid=GetQueryString("openid");
-    var encrypt_code=JSON.parse(sessionStorage.getItem('cardCode'));
+    var encrypt_code=GetQueryString("encrypt_code");
+    var cardCode=JSON.parse(sessionStorage.getItem('cardCode'));
     var card_Code='';
-    if (encrypt_code==null) {
-      encrypt_code=GetQueryString("encrypt_code");
+    if (cardCode==null) {
       card_Code=null;
     }else {
       card_Code='1';
@@ -115,22 +118,26 @@ export default {
     var that = this;
     that.$http({
       method: 'post',
-      url: COURSES + '/person/queryShopMem',
+      url: COURSES + '/person/queryMemInfo',
       data: {
         'mid': mid,
-        'cardId': card_id,
-        'cardCode':encrypt_code,
-        'cardOpenId':openid,
+        'card_id': card_id,
+        'encrypt_code':encrypt_code,
+        'openid':openid,
         'entType':'0',
-        "isInitCode":card_Code
+        "isInitCode":card_Code,
+        "cardCode": cardCode
       }
     }).then(function(res) {
-      if (res.data.status == 200) {
+      if (res.data.code === '000000') {
         that.card.title = res.data.data.title;
         that.card.logo = res.data.data.logo;
         that.card.cardno = res.data.data.cardno;
         that.card.balance = res.data.data.balance;
         that.card.bouns = res.data.data.bouns;
+        that.card.level = res.data.data.level;
+        sessionStorage.setItem('memId', JSON.stringify(res.data.data.memId));
+        sessionStorage.setItem('checkPw', JSON.stringify(res.data.data.checkPw));
         if (res.data.data.bac_url) {
           that.activeColor = "url("+res.data.data.bac_url+")";
         }else {

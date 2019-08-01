@@ -1,1 +1,1 @@
-global.COURSES = '/pay'
+global.COURSES = '/member-mall/'

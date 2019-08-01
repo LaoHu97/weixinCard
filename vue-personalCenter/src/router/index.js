@@ -24,6 +24,21 @@ export default new Router({
       path: '/table03',
       name: 'table03',
       component: resolve => require(['../views/table03.vue'], resolve)
+    },
+    {
+      path: '/table04',
+      name: 'table04',
+      component: resolve => require(['../views/table04.vue'], resolve)
+    },
+    {
+      path: '/table05',
+      name: 'table04',
+      component: resolve => require(['../views/table05.vue'], resolve)
+    },
+    {
+      path: '/table06',
+      name: 'table06',
+      component: resolve => require(['../views/table06.vue'], resolve)
     }
   ]
 })

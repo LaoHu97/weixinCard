@@ -202,6 +202,7 @@ export default {
             "paySign": res.data.data.paySign
           }, function (res) {
             if (res.err_msg == "get_brand_wcpay_request:ok") {
+              that.loadingShow=true;
               that.$http({
                 method: 'post',
                 url: COURSES+'/pay/receiveCardAfterPay',
@@ -212,6 +213,7 @@ export default {
                 }
               }).then(res => {
                 console.log(res);
+                that.loadingShow=false;
                 wx.addCard({
                   cardList: res.data.data.addCardListConfig, // 需要添加的卡券列表
                   success: function (res) {
@@ -229,10 +231,11 @@ export default {
                 }
               }).then(res => {
 
-              })
-              that.$vux.toast.show({
-                type:'warn',
-                text: '支付失败'
+              }).catch(() => {
+                that.$vux.toast.show({
+                  type:'warn',
+                  text: '支付失败'
+                })
               })
             }
           });

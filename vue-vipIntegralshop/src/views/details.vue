@@ -101,7 +101,7 @@ export default {
                     memCode: JSON.parse(sessionStorage.getItem('cardCode')),
                   }
                 }).then(function(res) {
-                  that.CongratulationsOk = res.data.message;
+                  that.CongratulationsOk = '兑换成功'
                   that.show1 = true;
                 });
                 that.CongratulationsOk = '兑换成功'

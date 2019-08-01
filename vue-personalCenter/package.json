@@ -13,6 +13,7 @@
     "fastclick": "^1.0.6",
     "font-awesome": "^4.7.0",
     "i": "^0.3.5",
+    "jsbarcode": "^3.11.0",
     "less-loader": "^4.0.5",
     "md5": "^2.2.1",
     "vue": "^2.3.3",

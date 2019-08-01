@@ -97,9 +97,6 @@ export default {
   line-height: 20px;
   color: #999;
 }
-.flex-demo2 span{
-
-}
 .flex-demo3{
   text-align: left;
   line-height: 80px;

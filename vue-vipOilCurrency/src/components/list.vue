@@ -115,7 +115,7 @@ export default {
       var that = this;
       that.$http({
         method: 'post',
-        url: COURSES+'/wxcard/queryStoreToPhone',
+        url: COURSES+'card/queryStoreToCard',
         data: {
           'mid': that.mid,
           'latitude': String(that.latitude),
@@ -125,10 +125,7 @@ export default {
           'flag': String(that.flag)
         }
       }).then(function(res) {
-        let {status,message,data}=res.data;
-        if (status==200) {
-          that.list=data.map.storeList;
-        }
+        that.list=res.data.data.storeList;
         that.$vux.loading.hide();
       });
     },
@@ -161,7 +158,7 @@ export default {
       var that = this;
       that.$http({
         method: 'post',
-        url: COURSES+'/bounsShop/loadConfig',
+        url: COURSES+'pay/getJsInitConfig',
         data: {
           'mid': that.mid,
           'url': window.location.href.split('#')[0]
@@ -175,7 +172,7 @@ export default {
               timestamp: res.data.data.configinfo.timestamp, // 必填，生成签名的时间戳
               nonceStr: res.data.data.configinfo.noncestr, // 必填，生成签名的随机串
               signature: res.data.data.configinfo.configSign,// 必填，签名，见附录1
-              jsApiList: ['getLocation' ,'openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+              jsApiList: ['getLocation' ,'openLocation', 'addCard'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           });
           that.$wechat.ready(function(){
             //获取用户地理位置
@@ -249,9 +246,6 @@ export default {
 .listButtom{
   float: right;
   margin-top: 10px;
-}
-.list-center-text-left{
-
 }
 .list-center-text-left p{
   font-size: 18px;

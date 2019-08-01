@@ -8,12 +8,12 @@
         <flexbox>
           <flexbox-item>
             <div class="flex-demo flex-demo1">充值金额：<span>{{item.amount}}</span>￥</div>
-            <div class="flex-demo flex-demo2">赠送金额：<span>{{item.discount}}</span>￥</div>
+            <!-- <div class="flex-demo flex-demo2">赠送金额：<span>{{item.discount}}</span>￥</div> -->
           </flexbox-item>
           <flexbox-item>
             <div class="flex-demo flex-demo3">
               <i slot="icon" class="fa fa-calendar fa-lg"></i>
-              <span>{{item.creat_stamp}}</span>
+              <span>{{formatterDate(item.pay_time)}}</span>
             </div>
           </flexbox-item>
         </flexbox>
@@ -32,6 +32,7 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 import {Divider, Flexbox,  FlexboxItem,  XHeader } from 'vux'
+import { dateFormat } from '../util/util'
 
 export default {
   components: {
@@ -47,18 +48,22 @@ export default {
     }
   },
   methods: {
+    formatterDate(e) {
+      return dateFormat(e)
+    },
     onInfinite() {
-      this.$http.post(COURSES+'/person/queryTransRecord', {
-          pagNum: String(this.list.length / 10 + 1),
-          mid:JSON.parse(sessionStorage.getItem('mid')),
-          card_id:JSON.parse(sessionStorage.getItem('card_id')),
-          openId:JSON.parse(sessionStorage.getItem('openId')),
+      this.$http.post(COURSES+'/person/queryDepositOrder', {
+          pageNum: String(this.list.length / 10 + 1),
+          // mid:JSON.parse(sessionStorage.getItem('mid')),
+          // card_id:JSON.parse(sessionStorage.getItem('card_id')),
+          // openId:JSON.parse(sessionStorage.getItem('openId')),
           numPerPage:'10',
-          type:'D'
+          memId: JSON.parse(sessionStorage.getItem('memId'))
+          // type:'D'
       }).then((res) => {
         setTimeout(() => {
-          if (res.data.data.accTransList.length) {
-            this.list = this.list.concat(res.data.data.accTransList);
+          if (res.data.data.depositList.length) {
+            this.list = this.list.concat(res.data.data.depositList);
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
             if (this.list.length == res.data.data.total) {
               this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
@@ -98,9 +103,6 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #999;
-}
-.flex-demo2 span{
-
 }
 .flex-demo3{
   text-align: left;
